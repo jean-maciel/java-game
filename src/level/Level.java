@@ -1,10 +1,11 @@
 package level;
 
 import graphics.Screen;
+import level.tile.Tile;
 
 public class Level {
-    private int width, height;
-    private int[] tiles;
+    protected int width, height;
+    protected int[] tiles;
 
     // Random Level Constructor
     public Level(int width, int height) {
@@ -19,7 +20,24 @@ public class Level {
         loadLevel(path);
     }
 
-    private void generateLevel() {
+    public void update() {
+
+    }
+
+    public void render(int xScroll, int yScroll, Screen screen) {
+        int x0 = xScroll >> 4;
+        int x1 = (xScroll + screen.width) >> 4;
+        int y0 = yScroll >> 4;
+        int y1 = (yScroll + screen.height) >> 4;
+    }
+
+    public Tile getTile(int x, int y) {
+        if (tiles[x + y * width] == 0) return Tile.grassTile;
+
+        return null;
+    }
+
+    protected void generateLevel() {
 
     }
 
@@ -27,13 +45,6 @@ public class Level {
 
     }
 
-    public void update() {
-
-    }
-
-    public void render(int xScroll, int yScroll, Screen screen) {
-
-    }
 
     private void time() {
 
