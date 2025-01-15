@@ -2,6 +2,7 @@ package graphics;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -11,16 +12,18 @@ public class SpriteSheet {
 
     public int[] pixels;
 
+    public static SpriteSheet tiles = new SpriteSheet("res/textures/SpriteSheet.png", 256);
+
     public SpriteSheet(String path, int SIZE) {
         this.path = path;
         this.SIZE = SIZE;
         pixels = new int[SIZE * SIZE];
-        loadSheet();
+        loadSheet(path);
     }
 
-    private void loadSheet() {
+    private void loadSheet(String path) {
         try {
-            BufferedImage image = ImageIO.read(Objects.requireNonNull(SpriteSheet.class.getResource(path)));
+            BufferedImage image = ImageIO.read(new File(path));
             int w = image.getWidth();
             int h = image.getHeight();
 
@@ -28,5 +31,9 @@ public class SpriteSheet {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int getSIZE() {
+        return SIZE;
     }
 }
