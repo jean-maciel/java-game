@@ -11,6 +11,11 @@ public class Sprite {
     public static Sprite grassSprite = new Sprite(16, 0, 0, SpriteSheet.tiles);
     public static Sprite voidSprite = new Sprite(16, 0x21292f);
 
+    public static Sprite playerDown = new Sprite(32, 0, 0, SpriteSheet.characters);
+    public static Sprite playerUp = new Sprite(32, 0, 0, SpriteSheet.characters);
+    public static Sprite playerLeft = new Sprite(32, 0, 0, SpriteSheet.characters);
+    public static Sprite playerRight = new Sprite(32, 0, 0, SpriteSheet.characters);
+
     public Sprite(int SIZE, int x, int y, SpriteSheet spriteSheet) {
         this.SIZE = SIZE;
         this.x = x * SIZE;

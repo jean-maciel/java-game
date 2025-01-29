@@ -1,3 +1,4 @@
+import entity.mob.Player;
 import graphics.Screen;
 import input.Keyboard;
 import level.Level;
@@ -18,14 +19,15 @@ public class Game extends Canvas implements Runnable {
     public static int height = width / 16 * 9;
     public static int scale = 3;
 
+    private boolean running = false;
+
     private Thread gameThread;
     private JFrame jFrame;
-    private boolean running = false;
     private Keyboard keyboard;
-
     private Level level;
-
     private Screen screen;
+    private Player player;
+
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
@@ -37,6 +39,7 @@ public class Game extends Canvas implements Runnable {
         jFrame = new JFrame();
         keyboard = new Keyboard();
         level = new RandomLevel(64, 64);
+        player = new Player(keyboard);
 
         addKeyListener(keyboard);
     }
@@ -89,17 +92,13 @@ public class Game extends Canvas implements Runnable {
                 frames = 0;
             }
         }
-    }
 
-    int x = 0, y = 0;
+        stop();
+    }
 
     public void update() {
         keyboard.update();
-
-        if (keyboard.up) y--;
-        if (keyboard.down) y++;
-        if (keyboard.right) x++;
-        if (keyboard.left) x--;
+        player.update();
     }
 
     public void render() {
@@ -111,15 +110,22 @@ public class Game extends Canvas implements Runnable {
         }
 
         screen.clear();
-        level.render(x, y, screen);
 
-        System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
+        int xScroll = player.x - screen.width / 2;
+        int yScroll = player.y - screen.height / 2;
+
+        level.render(xScroll, yScroll, screen);
+        player.render(screen);
+
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] = screen.pixels[i];
+        }
 
         Graphics g = bufferStrategy.getDrawGraphics();
 
-        g.drawImage(image, x, y, getWidth(), getHeight(), null);
-
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
+
         bufferStrategy.show();
     }
 

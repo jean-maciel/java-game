@@ -1,5 +1,6 @@
 package graphics;
 
+import entity.mob.Player;
 import level.tile.Tile;
 
 import java.util.Random;
@@ -13,7 +14,7 @@ public class Screen {
     public int xOffset, yOffset;
 
     public int[] pixels;
-    public int[]     tiles = new int[MAP_SIZE * MAP_SIZE];
+    public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 
     private Random random = new Random();
 
@@ -47,6 +48,28 @@ public class Screen {
                 if (xAbsolute < -tile.sprite.getSIZE() || xAbsolute >= width || yAbsolute < 0 || yAbsolute >= height) break;
                 if (xAbsolute < 0) xAbsolute = 0;
                 pixels[xAbsolute + yAbsolute * width] = tile.sprite.pixels[x + y * tile.sprite.getSIZE()];
+            }
+        }
+    }
+
+    public void renderPlayer(int xPos, int yPos, Sprite sprite) {
+        xPos -= xOffset;
+        yPos -= yOffset;
+
+        for (int y = 0; y < 32; y++) {
+            int yAbsolute = y + yPos;
+
+            for (int x = 0; x < 32; x++) {
+                int xAbsolute = x + xPos;
+
+                if (xAbsolute < -32 || xAbsolute >= width || yAbsolute < 0 || yAbsolute >= height) break;
+                if (xAbsolute < 0) xAbsolute = 0;
+
+                int col = sprite.pixels[x + y * 32];
+
+                if (col != 0x00000000) {
+                    pixels[xAbsolute + yAbsolute * width] = col;
+                }
             }
         }
     }
